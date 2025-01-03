@@ -11,7 +11,7 @@ String convertDateTimeToString(DateTime dateTime) {
     day = '0$day';
   }
 
-  String yyyymmdd = year + month + day;
+  String ddmmyyyy = day + month + year;
 
-  return yyyymmdd;
+  return ddmmyyyy;
 }

@@ -1,4 +1,6 @@
+import 'package:expense_tracker_app/datetime/date_time_helper.dart';
 import 'package:expense_tracker_app/models/expense_item.dart';
+import 'package:flutter/material.dart';
 
 /*
 The following are thing that will the part of the expense data:
@@ -20,7 +22,7 @@ The following are thing that will the part of the expense data:
   - Barchat to represent expense
 */
 
-class ExpenseData {
+class ExpenseData extends ChangeNotifier {
   List<ExpenseItem> overallExpenseList = [];
 
   List<ExpenseItem> getAllExpense() {
@@ -29,12 +31,15 @@ class ExpenseData {
 
   void addExpense(ExpenseItem item) {
     overallExpenseList.add(item);
+    notifyListeners();
   }
 
   void deleteExpense(ExpenseItem item) {
     overallExpenseList.remove(item);
+    notifyListeners();
   }
 
+  // Get the name of the day in letters
   String getDayName(DateTime dateTime) {
     switch (dateTime.weekday) {
       case 1:
@@ -56,6 +61,7 @@ class ExpenseData {
     }
   }
 
+  // Get the Date of the start of the week
   DateTime startOfWeekDate() {
     DateTime? startOfWeek;
     DateTime today = DateTime.now();
@@ -66,5 +72,24 @@ class ExpenseData {
       }
     }
     return startOfWeek!;
+  }
+
+  // Calculate Daily Expense for the Day
+  Map<String, double> calculateDailyExpenseSummary() {
+    // date(ddmmyyyy) : totalExpenseForTheDay
+    Map<String, double> dailyExpenseSummary = {};
+    for (var expense in overallExpenseList) {
+      String date = convertDateTimeToString(expense.dateTime);
+      double amount = double.parse(expense.amount);
+
+      if (dailyExpenseSummary.containsKey(date)) {
+        double currentAmount = dailyExpenseSummary[date]!;
+        currentAmount += amount;
+        dailyExpenseSummary[date] = currentAmount;
+      } else {
+        dailyExpenseSummary.addAll({date: amount});
+      }
+    }
+    return dailyExpenseSummary;
   }
 }

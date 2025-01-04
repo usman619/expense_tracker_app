@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/components/expense_summary.dart';
 import 'package:expense_tracker_app/components/expense_tile.dart';
 import 'package:expense_tracker_app/data/expense_data.dart';
 import 'package:expense_tracker_app/models/expense_item.dart';
@@ -95,13 +96,25 @@ class _HomePageState extends State<HomePage> {
           centerTitle: true,
           primary: true,
         ),
-        body: ListView.builder(
-          itemCount: value.getAllExpense().length,
-          itemBuilder: (context, index) => ExpenseTile(
-            name: value.getAllExpense()[index].name,
-            amount: '\$${value.getAllExpense()[index].amount}',
-            dateTime: value.getAllExpense()[index].dateTime.toString(),
-          ),
+        body: ListView(
+          children: [
+            ExpenseSummary(
+              startOfWeek: value.startOfWeekDate(),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: value.getAllExpense().length,
+              itemBuilder: (context, index) => ExpenseTile(
+                name: value.getAllExpense()[index].name,
+                amount: value.getAllExpense()[index].amount,
+                dateTime: value.getAllExpense()[index].dateTime,
+              ),
+            ),
+          ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: addNewExpense,

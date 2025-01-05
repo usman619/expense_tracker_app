@@ -16,6 +16,13 @@ class _HomePageState extends State<HomePage> {
   final newExpenseNameController = TextEditingController();
   final newExpenseAmountController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    // prepare data on startup
+    Provider.of<ExpenseData>(context, listen: false).prepareData();
+  }
+
   void addNewExpense() {
     showDialog(
       context: context,
@@ -41,6 +48,7 @@ class _HomePageState extends State<HomePage> {
             // Expense Amount
             TextField(
               controller: newExpenseAmountController,
+              keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 hintText: 'Amount',
                 hintStyle: TextStyle(
@@ -86,18 +94,25 @@ class _HomePageState extends State<HomePage> {
     newExpenseAmountController.clear();
   }
 
+  void deleteExpense(ExpenseItem expense) {
+    Provider.of<ExpenseData>(context, listen: false).deleteExpense(expense);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ExpenseData>(
       builder: (context, value, child) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Home Page'),
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          centerTitle: true,
-          primary: true,
-        ),
+        // appBar: AppBar(
+        //   title: const Text('Home Page'),
+        //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        //   centerTitle: true,
+        //   primary: true,
+        // ),
         body: ListView(
           children: [
+            SizedBox(
+              height: 25,
+            ),
             ExpenseSummary(
               startOfWeek: value.startOfWeekDate(),
             ),
@@ -107,11 +122,13 @@ class _HomePageState extends State<HomePage> {
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: value.getAllExpense().length,
+              itemCount: value.getAllExpenseList().length,
               itemBuilder: (context, index) => ExpenseTile(
-                name: value.getAllExpense()[index].name,
-                amount: value.getAllExpense()[index].amount,
-                dateTime: value.getAllExpense()[index].dateTime,
+                name: value.getAllExpenseList()[index].name,
+                amount: value.getAllExpenseList()[index].amount,
+                dateTime: value.getAllExpenseList()[index].dateTime,
+                deleteTapped: (p0) =>
+                    deleteExpense(value.getAllExpenseList()[index]),
               ),
             ),
           ],

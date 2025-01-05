@@ -1,3 +1,4 @@
+import 'package:expense_tracker_app/data/hive_database.dart';
 import 'package:expense_tracker_app/datetime/date_time_helper.dart';
 import 'package:expense_tracker_app/models/expense_item.dart';
 import 'package:flutter/material.dart';
@@ -25,18 +26,27 @@ The following are thing that will the part of the expense data:
 class ExpenseData extends ChangeNotifier {
   List<ExpenseItem> overallExpenseList = [];
 
-  List<ExpenseItem> getAllExpense() {
+  List<ExpenseItem> getAllExpenseList() {
     return overallExpenseList;
+  }
+
+  // retrieve data from the db
+  final db = HiveDatabase();
+  void prepareData() {
+    if (db.readData().isNotEmpty) {}
+    overallExpenseList = db.readData();
   }
 
   void addExpense(ExpenseItem item) {
     overallExpenseList.add(item);
     notifyListeners();
+    db.saveData(overallExpenseList);
   }
 
   void deleteExpense(ExpenseItem item) {
     overallExpenseList.remove(item);
     notifyListeners();
+    db.saveData(overallExpenseList);
   }
 
   // Get the name of the day in letters

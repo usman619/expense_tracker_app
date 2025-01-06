@@ -1,5 +1,5 @@
 import 'package:expense_tracker_app/bar_graph/bar_graph.dart';
-import 'package:expense_tracker_app/data/expense_data.dart';
+import 'package:expense_tracker_app/database/expense_data.dart';
 import 'package:expense_tracker_app/datetime/date_time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -107,7 +107,7 @@ class ExpenseSummary extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 200,
+            height: 220,
             child: BarGraph(
               maxY: calculateMax(value, sunday, monday, tuesday, wednesday,
                   thursday, friday, saturday),

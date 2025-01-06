@@ -26,7 +26,8 @@ class ExpenseTile extends StatelessWidget {
             icon: Icons.delete,
             foregroundColor: Colors.white,
             backgroundColor: Colors.red,
-          )
+            borderRadius: BorderRadius.circular(8),
+          ),
         ],
       ),
       child: ListTile(

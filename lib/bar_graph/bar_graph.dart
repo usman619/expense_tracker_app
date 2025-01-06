@@ -50,9 +50,15 @@ class BarGraph extends StatelessWidget {
           leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
-            sideTitles:
-                SideTitles(showTitles: true, getTitlesWidget: getBottomTitles),
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 60,
+              getTitlesWidget: getBottomTitles,
+            ),
           ),
+        ),
+        barTouchData: BarTouchData(
+          enabled: false,
         ),
         barGroups: myBarData.barData
             .map(
@@ -61,13 +67,13 @@ class BarGraph extends StatelessWidget {
                 barRods: [
                   BarChartRodData(
                     toY: data.y,
-                    color: Colors.grey[700],
+                    color: Colors.blue[500],
                     width: 25,
                     borderRadius: BorderRadius.circular(4),
                     backDrawRodData: BackgroundBarChartRodData(
                       show: true,
                       toY: maxY,
-                      color: Colors.grey[200],
+                      color: Colors.grey[300],
                     ),
                   ),
                 ],
@@ -114,6 +120,7 @@ Widget getBottomTitles(double value, TitleMeta meta) {
   }
   return SideTitleWidget(
     axisSide: meta.axisSide,
+    space: 5,
     child: text,
   );
 }

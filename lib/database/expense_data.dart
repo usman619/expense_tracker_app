@@ -1,4 +1,4 @@
-import 'package:expense_tracker_app/data/hive_database.dart';
+import 'package:expense_tracker_app/database/hive_database.dart';
 import 'package:expense_tracker_app/datetime/date_time_helper.dart';
 import 'package:expense_tracker_app/models/expense_item.dart';
 import 'package:flutter/material.dart';

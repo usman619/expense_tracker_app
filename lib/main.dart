@@ -1,4 +1,4 @@
-import 'package:expense_tracker_app/data/expense_data.dart';
+import 'package:expense_tracker_app/database/expense_data.dart';
 import 'package:expense_tracker_app/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -25,8 +25,11 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          fontFamily: 'FiraCode',
           brightness: Brightness.dark,
-          colorScheme: const ColorScheme.dark(),
+          colorScheme: const ColorScheme.dark(
+            primary: Colors.white,
+          ),
           useMaterial3: true,
         ),
         home: const HomePage(),

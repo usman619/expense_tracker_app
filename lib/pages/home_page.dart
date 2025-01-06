@@ -1,6 +1,6 @@
 import 'package:expense_tracker_app/components/expense_summary.dart';
 import 'package:expense_tracker_app/components/expense_tile.dart';
-import 'package:expense_tracker_app/data/expense_data.dart';
+import 'package:expense_tracker_app/database/expense_data.dart';
 import 'package:expense_tracker_app/models/expense_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -73,12 +73,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   void save() {
-    ExpenseItem newExpense = ExpenseItem(
-      name: newExpenseNameController.text,
-      amount: newExpenseAmountController.text,
-      dateTime: DateTime.now(),
-    );
-    Provider.of<ExpenseData>(context, listen: false).addExpense(newExpense);
+    if (newExpenseNameController.text.isNotEmpty &&
+        newExpenseAmountController.text.isNotEmpty) {
+      ExpenseItem newExpense = ExpenseItem(
+        name: newExpenseNameController.text,
+        amount: newExpenseAmountController.text,
+        dateTime: DateTime.now(),
+      );
+
+      Provider.of<ExpenseData>(context, listen: false).addExpense(newExpense);
+    }
 
     Navigator.pop(context);
     clear();
@@ -102,22 +106,23 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Consumer<ExpenseData>(
       builder: (context, value, child) => Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('Home Page'),
-        //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        //   centerTitle: true,
-        //   primary: true,
-        // ),
+        appBar: AppBar(
+          title: const Text(
+            'Expenses',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          centerTitle: true,
+          primary: true,
+        ),
         body: ListView(
           children: [
-            SizedBox(
-              height: 25,
-            ),
             ExpenseSummary(
               startOfWeek: value.startOfWeekDate(),
             ),
             SizedBox(
-              height: 25,
+              height: 10,
             ),
             ListView.builder(
               shrinkWrap: true,
